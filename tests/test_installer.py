@@ -150,7 +150,7 @@ class UpgradeIdleTests(unittest.TestCase):
             (root / "installation.json").write_text(json.dumps(manifest))
             agent = root / "agent.plist"
             agent.write_bytes(b"old startup")
-            with patch.object(installer, "root_dir", return_value=root), patch.object(installer, "launch_agent", return_value=agent), patch.object(installer, "health", return_value={"install_id":"old-id"}), patch.object(installer, "create_service_app"), patch.object(installer.subprocess, "run"), patch.object(installer, "assert_idle", side_effect=RuntimeError("active")), patch.object(installer, "stop_service") as stop:
+            with patch.object(installer.sys, "platform", "darwin"), patch.object(installer, "root_dir", return_value=root), patch.object(installer, "launch_agent", return_value=agent), patch.object(installer, "health", return_value={"install_id":"old-id"}), patch.object(installer, "create_service_app"), patch.object(installer.subprocess, "run"), patch.object(installer, "assert_idle", side_effect=RuntimeError("active")), patch.object(installer, "stop_service") as stop:
                 with self.assertRaisesRegex(RuntimeError, "active"):
                     installer.install("fixture-uv", open_console=False)
             stop.assert_not_called()

@@ -1,0 +1,8 @@
+{
+  "version": "42.11.15",
+  "platform": "darwin",
+  "arch": "arm64",
+  "archive": "electron-v42.11.15-darwin-arm64.zip",
+  "sha256": "aa03043128babffe35a22d4a5604606c2f650028fd99057563a1bde21216401b",
+  "checksums_source": "https://github.com/electron/electron/releases/download/v42.11.15/SHASUMS256.txt"
+}

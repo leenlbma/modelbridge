@@ -1,0 +1,22 @@
+name: Compatibility report / 兼容性反馈
+description: Share gateway and actual Claude task results separately.
+body:
+  - type: input
+    id: target
+    attributes:
+      label: Public provider, model and protocol / 服务、模型与协议
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: ModelBridge, Claude and OS versions / 版本
+    validations:
+      required: true
+  - type: textarea
+    id: checks
+    attributes:
+      label: Checks performed / 实际验证范围
+      description: Separate text, streamed tool arguments, tool-result roundtrip and real Claude file tasks. Do not attach keys, headers or user files.
+    validations:
+      required: true

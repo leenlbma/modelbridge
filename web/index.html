@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark">
+  <title>ModelBridge · 模型连接</title><link rel="icon" href="/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
+</head>
+<body>
+<svg class="symbol-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-connection" viewBox="0 0 24 24"><path d="m10 14 4-4m-6.5 1.5-2 2a4.25 4.25 0 0 0 6 6l2-2m-3-11 2-2a4.25 4.25 0 0 1 6 6l-2 2"/></symbol>
+  <symbol id="i-window" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><path d="M3.5 9h17M9 9v10"/></symbol>
+  <symbol id="i-activity" viewBox="0 0 24 24"><path d="M3 12h4l3-6 4 12 3-6h4"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M19 9a7.5 7.5 0 1 0 .3 5M19 4.5V9h-4.5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M5 15v5h14v-5"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></symbol>
+</svg>
+<div class="workspace">
+  <aside class="sidebar">
+    <div class="brand"><img class="app-icon" src="/icon.svg" width="38" height="38" alt=""><div class="brand-copy"><strong>ModelBridge</strong><span>模型连接工具</span></div></div>
+    <div class="sidebar-caption">工作区</div>
+    <nav aria-label="工作区导航">
+      <a href="#connection" class="selected" aria-current="page" data-panel="connection" title="模型连接"><span class="nav-icon"><svg class="icon"><use href="#i-connection"/></svg></span><span class="nav-label">模型连接</span></a>
+      <a href="#claude" data-panel="claude" title="接入 Claude"><span class="nav-icon"><svg class="icon"><use href="#i-window"/></svg></span><span class="nav-label">接入 Claude</span></a>
+      <a href="#help" data-panel="help" title="状态与帮助"><span class="nav-icon"><svg class="icon"><use href="#i-activity"/></svg></span><span class="nav-label">状态与帮助</span></a>
+    </nav>
+    <div class="sidebar-bottom"><div class="local-label"><span class="status-dot"></span><span>仅在本机运行</span></div><p id="version">ModelBridge</p></div>
+  </aside>
+  <main>
+    <header class="toolbar"><div><h1 id="page-title">模型连接</h1><p id="page-description">选择服务，连接你的模型。</p></div><div class="toolbar-actions"><span class="service-pill" id="service-pill"><i></i><span>正在连接</span></span><button class="icon-button" id="refresh" type="button" title="刷新连接状态" aria-label="刷新连接状态"><svg class="icon"><use href="#i-refresh"/></svg></button></div></header>
+    <div id="fatal" class="notice error fatal" role="alert" hidden></div>
+    <div id="desktop-notice" class="notice compact fatal" role="status" hidden></div>
+    <div id="service-setup-banner" class="setup-banner" hidden><span id="service-setup-summary"></span><button class="button" id="service-setup-open" type="button">安装后台服务</button></div>
+    <section id="connection" class="panel" aria-labelledby="page-title">
+      <div class="panel-scroll" id="connection-scroll"><div class="content-width">
+        <div class="section-heading"><h2>正在使用</h2><span class="subtle" id="active-caption">一次启用一个模型</span></div>
+        <div class="active-connection"><img class="model-icon" src="/icon.svg" width="40" height="40" alt=""><div class="active-details"><h3 id="current-model">尚未配置连接</h3><p><span id="current-provider">选择下方服务开始设置</span><span class="separator" aria-hidden="true">·</span><span id="current-protocol">—</span></p></div><span id="active-badge" class="badge">未配置</span></div>
+        <p class="caption verification-time" id="verification-time">验证通过后，连接会显示在这里。</p>
+        <div class="section-heading editor-heading"><div class="heading-with-state"><h2>连接设置</h2><span class="draft-state" id="draft-state">已保存</span></div><button class="text-button" id="reset-draft" type="button" disabled>还原更改</button></div>
+        <form id="setup-form">
+          <div class="settings-group">
+            <div class="setting-row"><label for="provider">模型服务</label><div class="setting-control"><select id="provider"><option value="">正在加载服务…</option></select><p class="caption" id="provider-note">选择一个服务预设，或添加自定义地址。</p></div></div>
+            <div class="setting-row"><label for="key">API Key</label><div class="setting-control"><div class="input-with-action"><input id="key" type="password" placeholder="输入此服务的 API Key" autocomplete="off" spellcheck="false" required minlength="8" maxlength="4096" aria-describedby="key-help"><button class="icon-button reveal-key" type="button" id="show-key" aria-label="显示 Key" aria-pressed="false" title="显示 Key"><svg class="icon"><use href="#i-eye"/></svg></button></div><p class="caption" id="key-help">验证成功后清空，不保存明文 Key。</p></div></div>
+            <div class="setting-row"><label for="model">模型</label><div class="setting-control"><div class="model-input-row"><input id="model" list="model-options" placeholder="选择或输入模型 ID" required spellcheck="false" autocomplete="off" aria-describedby="model-note"><datalist id="model-options"></datalist><button type="button" id="load-models" class="button">获取列表</button></div><p class="caption" id="model-note">可直接填写模型 ID，无需先获取列表。</p></div></div>
+          </div>
+          <details class="settings-group advanced" id="connection-settings"><summary><span>高级设置</span><span class="summary-detail" id="endpoint-summary">服务地址与接口</span><span class="chevron" aria-hidden="true"></span></summary>
+            <div class="setting-row"><label for="connection-name">连接名称</label><div class="setting-control"><input id="connection-name" maxlength="60" required autocomplete="off"></div></div>
+            <div class="setting-row"><label for="base-url">服务地址</label><div class="setting-control"><input id="base-url" type="url" placeholder="https://api.example.com/v1" required spellcheck="false" autocomplete="off" aria-describedby="address-help"><p class="caption" id="address-help">填写基础地址，不含 /chat/completions 等后缀。Key 将发送至此地址，修改后需重新填写。</p></div></div>
+            <div class="setting-row"><label for="protocol">接口类型</label><div class="setting-control"><select id="protocol"><option value="responses">OpenAI Responses</option><option value="chat_completions">Chat Completions</option><option value="anthropic">Anthropic Messages</option></select></div></div>
+            <div class="setting-row"><label for="auth">认证方式</label><div class="setting-control"><select id="auth"><option value="bearer">Bearer Key</option><option value="x-api-key">x-api-key</option></select></div></div>
+          </details>
+        </form>
+        <p class="caption below-group">切换服务会清空输入的 Key。只有验证通过后，才会替换当前连接。</p>
+        <div id="feedback" class="notice" role="status" aria-live="polite" hidden></div>
+        <div class="checks" id="checks" hidden><span>✓ 文字回复</span><span>✓ 流式工具调用</span><span>✓ 结果回传</span></div>
+        <button id="success-next" class="text-button next-step" type="button" data-go="claude" hidden>下一步：接入 Claude <svg class="icon"><use href="#i-arrow"/></svg></button>
+      </div></div>
+      <div class="actionbar"><div class="action-note"><span class="spinner" id="verify-spinner" hidden></span><span id="save-hint">验证将发送 3 次简短请求，使用少量额度。</span></div><div class="action-buttons"><button class="button" id="cancel-verify" type="button" hidden>取消验证</button><button class="button" id="goto-claude" type="button" data-go="claude" disabled>接入 Claude<svg class="icon small"><use href="#i-arrow"/></svg></button><button class="button primary" id="connect" form="setup-form" type="submit" title="验证并保存（⌘ Enter）"><span id="connect-label">验证并保存</span><kbd aria-hidden="true">⌘ ↵</kbd></button></div></div>
+    </section>
+    <section id="claude" class="panel" aria-labelledby="page-title" hidden>
+      <div class="panel-scroll"><div class="content-width">
+        <div class="section-heading"><h2>Claude 桌面端</h2><span class="badge" id="claude-detected">检查安装状态</span></div>
+        <div class="client-summary settings-group"><span class="client-icon"><svg class="icon"><use href="#i-window"/></svg></span><div><h3 id="export-model">先完成模型连接</h3><p class="caption" id="export-description">导出经过验证的连接配置。</p></div></div>
+        <div class="notice compact" id="export-draft-note" hidden>当前有未验证的更改。导出配置使用上方已保存的连接。</div>
+        <ol class="guide-list settings-group">
+          <li><span class="step-number">1</span><div><h3>打开第三方推理设置</h3><p>在 Claude 菜单中选择 <b>Help → Troubleshooting → Enable Developer Mode</b>，再打开 <b>Developer → Configure Third-Party Inference…</b>。</p></div></li>
+          <li><span class="step-number">2</span><div><h3>导入配置，填入 Key</h3><p>点击下方“导出 Claude 配置”，在 Claude 中选择 <b>Import configuration</b>。然后填写此连接验证时使用的服务商 Key。</p><span class="inline-note">配置文件不含 Key。</span></div></li>
+          <li><span class="step-number">3</span><div><h3>测试连接，保存并重启</h3><p>选择 <b>Test connection → Apply Changes → Save & Restart</b>。进入 Code，选择项目文件夹并新建对话。</p><div class="client-status"><span class="status-dot" id="client-dot"></span><span id="claude-state">等待首次成功请求</span></div></div></li>
+        </ol>
+        <details class="settings-group manual-settings"><summary><span>手动填写配置</span><span class="chevron" aria-hidden="true"></span></summary><dl class="detail-list">
+          <div><dt>Inference provider</dt><dd>Gateway</dd></div><div><dt>Credential / Auth</dt><dd>Static API key / bearer</dd></div>
+          <div><dt>Gateway base URL</dt><dd><code id="manual-url">—</code><button class="copy" data-copy="manual-url" aria-label="复制 Gateway base URL"><svg class="icon small"><use href="#i-copy"/></svg></button></dd></div>
+          <div><dt>Gateway API key</dt><dd>填写此连接验证时使用的服务商 Key</dd></div>
+          <div><dt>Model ID</dt><dd><code id="route">claude-sonnet-4-5</code><button class="copy" data-copy="route" aria-label="复制 Model ID"><svg class="icon small"><use href="#i-copy"/></svg></button></dd></div>
+          <div><dt>Display name</dt><dd><code id="label-name">—</code><button class="copy" data-copy="label-name" aria-label="复制 Display name"><svg class="icon small"><use href="#i-copy"/></svg></button></dd></div>
+        </dl><p class="caption detail-note">Model ID 是客户端兼容别名，实际请求发送给已保存的模型。关闭 1M 上下文选项；切换模型后重新导入配置并重启 Claude。</p></details>
+      </div></div>
+      <div class="actionbar"><p class="action-note">每次更换服务或模型后，重新导入并新建对话。</p><div class="action-buttons"><button class="button" type="button" data-go="connection">返回连接设置</button><button id="download-config" class="button primary" type="button" disabled><svg class="icon small"><use href="#i-download"/></svg>导出 Claude 配置</button></div></div>
+    </section>
+    <section id="help" class="panel" aria-labelledby="page-title" hidden>
+      <div class="panel-scroll"><div class="content-width">
+        <div class="section-heading"><h2>运行状态</h2><span class="subtle">每 10 秒更新</span></div>
+        <dl class="settings-group detail-list"><div><dt>本地服务</dt><dd id="service-state">检查中</dd></div><div><dt>当前连接成功请求</dt><dd><span id="request-count">0</span><span class="subtle">次 / 本次启动</span></dd></div><div><dt>失败请求</dt><dd id="failed-count">0</dd></div><div><dt>最近成功</dt><dd id="last-success">暂无客户端请求</dd></div><div><dt>本机网关地址</dt><dd><code id="gateway-url">—</code><button class="copy" data-copy="gateway-url" aria-label="复制网关地址"><svg class="icon small"><use href="#i-copy"/></svg></button></dd></div></dl>
+        <p class="caption below-group">服务运行中代表本机网关可用。Claude 成功发送请求后，才会产生连接记录。</p>
+        <div id="desktop-service-actions" class="service-actions" hidden><button class="button" id="service-manage" type="button">管理后台服务</button><button class="text-button" id="service-stop" type="button">停用后台服务…</button></div>
+        <div class="section-heading help-heading"><h2>常见问题</h2></div>
+        <div class="settings-group faq">
+          <details><summary>连接失败，先检查什么？<span class="chevron" aria-hidden="true"></span></summary><p>检查服务地址、接口类型、模型 ID、Key 权限与额度；内网服务还需要公司网络或 VPN。如果本地服务离线，在客户端打开“管理后台服务”，按检查结果启动或修复；脚本版可重新运行安装入口。验证失败不会替换原连接。</p></details>
+          <details><summary>可以保存多个服务吗？<span class="chevron" aria-hidden="true"></span></summary><p>目前一次启用一个服务与模型。服务列表是连接预设；切换时重新填写对应 Key 并验证，再在 Claude 更新 Key、导入配置并重启。</p></details>
+          <details><summary>支持 Claude Design 和 Cowork 吗？<span class="chevron" aria-hidden="true"></span></summary><p>这些功能尚未验证，第三方 Key 不会解锁官方账号权益。当前开源版的真实供应商与 Code 完整任务验收仍待补齐。图片、附件、长上下文和其他服务的兼容性需分别验证。</p></details>
+          <details><summary>如何停用或卸载？<span class="chevron" aria-hidden="true"></span></summary><p>系统设置的“登录项与扩展”中，后台项名称为“ModelBridge 模型连接服务”，使用期间请保持开启。停用前先在 Claude 切换到其他可用配置，在本页点击“停用后台服务”；脚本版可运行“卸载 ModelBridge.command”。停用会停止后台服务并取消自动启动，保留本地配置供恢复。关闭此窗口不会停止服务。</p></details>
+        </div>
+        <div class="about"><img class="app-icon mini" src="/icon.svg" width="28" height="28" alt=""><div><strong>ModelBridge</strong><p>社区适配工具 · 非 Anthropic 官方产品</p></div></div>
+      </div></div>
+      <div class="actionbar"><p class="action-note">诊断摘要不含 Key、对话、服务地址或个人路径。</p><button id="diagnostics" class="button" type="button"><svg class="icon small"><use href="#i-download"/></svg>导出诊断摘要</button></div>
+    </section>
+  </main>
+</div>
+<dialog id="desktop-setup" class="setup-dialog" aria-labelledby="setup-title">
+  <div class="setup-dialog-inner">
+    <img src="/icon.svg" width="72" height="72" alt="">
+    <p class="setup-eyebrow">欢迎使用 ModelBridge</p>
+    <h2 id="setup-title">连接模型，从这里开始</h2>
+    <p class="setup-intro">先准备本机服务，再连接你喜欢的模型。</p>
+    <ol class="setup-steps">
+      <li data-step="1"><span>1</span><div><strong>检查运行环境</strong><p id="setup-python-check">已有环境直接复用，仅在缺失时下载</p></div></li>
+      <li data-step="2"><span>2</span><div><strong>检查后台服务</strong><p id="setup-service-check">确认版本，按需安装或升级</p></div></li>
+      <li data-step="3"><span>3</span><div><strong>确认连接</strong><p id="setup-connection-check">服务已运行时直接使用</p></div></li>
+    </ol>
+    <div class="setup-status" role="status" aria-live="polite"><span id="setup-spinner" class="spinner" hidden></span><p id="setup-detail"></p></div>
+    <p class="caption setup-network" id="setup-network">检查完成后，仅在缺少环境或组件时联网下载。</p>
+    <div class="setup-buttons"><button class="button" type="button" id="setup-close">稍后设置</button><button class="button primary" type="button" id="setup-install">安装后台服务</button></div>
+  </div>
+</dialog>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

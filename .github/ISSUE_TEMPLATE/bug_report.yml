@@ -1,0 +1,31 @@
+name: Bug report / 问题反馈
+description: Report a reproducible problem without credentials or private content.
+body:
+  - type: markdown
+    attributes:
+      value: "请勿上传 Key、原始日志、公司地址或用户文件。安全漏洞请走 Security 页面的私密报告入口。"
+  - type: input
+    id: versions
+    attributes:
+      label: Versions / 版本与环境
+      description: ModelBridge client/backend, macOS, chip and Claude versions.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction / 复现步骤
+      description: Describe the steps using fake data and public endpoints only.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Expected and actual behavior / 预期与实际结果
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Sanitized diagnostics / 脱敏诊断
+      description: Inspect the built-in diagnostic export before sharing; model IDs can also be private.

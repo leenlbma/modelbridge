@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" fill="none">
+  <title>ModelBridge</title>
+  <defs>
+    <linearGradient id="tile" x1="20" y1="8" x2="106" y2="122" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#344D86"/>
+      <stop offset=".52" stop-color="#202F55"/>
+      <stop offset="1" stop-color="#111C36"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="64" y1="4" x2="64" y2="124" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#99B1DE" stop-opacity=".65"/>
+      <stop offset="1" stop-color="#1C2946" stop-opacity=".4"/>
+    </linearGradient>
+    <linearGradient id="silver" x1="34" y1="30" x2="74" y2="82" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset=".52" stop-color="#F3F7FF"/>
+      <stop offset="1" stop-color="#BCD2F3"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="57" y1="47" x2="96" y2="99" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9ADFFF"/>
+      <stop offset=".47" stop-color="#71B4FF"/>
+      <stop offset="1" stop-color="#7E85F5"/>
+    </linearGradient>
+    <filter id="depth" x="15" y="16" width="101" height="103" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#081122" flood-opacity=".35"/>
+    </filter>
+  </defs>
+  <rect x="4.5" y="4.5" width="119" height="119" rx="28" fill="url(#tile)" stroke="url(#rim)"/>
+  <g transform="translate(-1 -1)" filter="url(#depth)">
+    <rect x="56" y="48" width="43" height="50" rx="17" stroke="url(#blue)" stroke-width="11.5"/>
+    <rect x="30" y="30" width="43" height="50" rx="17" stroke="url(#silver)" stroke-width="11.5"/>
+    <path d="M56 69v12c0 9.39 7.61 17 17 17" stroke="#172442" stroke-width="17"/>
+    <path d="M56 69v12c0 9.39 7.61 17 17 17" stroke="url(#blue)" stroke-width="11.5"/>
+  </g>
+</svg>

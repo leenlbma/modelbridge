@@ -1,0 +1,30 @@
+{
+  "name": "modelbridge-desktop",
+  "productName": "ModelBridge",
+  "version": "0.3.2",
+  "description": "ModelBridge macOS desktop console",
+  "private": true,
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test tests/desktop.test.cjs",
+    "build:mac": "python3 scripts/build_desktop.py",
+    "check:public": "python3 scripts/check_public.py"
+  },
+  "devDependencies": {
+    "electron": "42.11.15"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "license": "MIT",
+  "author": "leenlbma",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leenlbma/modelbridge.git"
+  },
+  "homepage": "https://github.com/leenlbma/modelbridge#readme",
+  "bugs": {
+    "url": "https://github.com/leenlbma/modelbridge/issues"
+  }
+}

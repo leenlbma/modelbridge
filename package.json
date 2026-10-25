@@ -12,7 +12,7 @@
     "check:public": "python3 scripts/check_public.py"
   },
   "devDependencies": {
-    "electron": "42.11.15"
+    "electron": "44.7.1"
   },
   "engines": {
     "node": ">=22.12.0"
